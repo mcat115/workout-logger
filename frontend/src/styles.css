@@ -1,0 +1,40 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  background-color: rgb(242, 250, 250);
+}
+
+.graph {
+  margin-top: 20px;
+}
+
+.forms-container {
+  display: flex;
+  justify-content: flex-start; 
+}
+
+.workout-form {
+  margin-right: 30px; 
+}
+
+.form-element {
+  margin: 5px;
+}
+
+.form-label  {
+  margin-right: 3px;
+}
+
+.delete-button {
+  margin-top: 5px;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}

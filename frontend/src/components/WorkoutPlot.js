@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import "chart.js/auto";
+import "../styles.css";
 
 const WorkoutPlot = ({ workouts, setWorkouts }) => {
   const mergeWorkouts = (res) => {
@@ -42,6 +43,8 @@ const WorkoutPlot = ({ workouts, setWorkouts }) => {
   );
 
   const dataWithTypes = sortedWorkouts.map(([_, workout]) => ({
+    // x and y are required for the chart to display data, that is why they are duplicates
+    // the date is displayed as a label and the type is displayed in the tooltip
     x: workout.duration,
     y: workout.duration,
     type: workout.type,
@@ -81,7 +84,7 @@ const WorkoutPlot = ({ workouts, setWorkouts }) => {
     },
   };
 
-  return <Line data={chartData} options={chartOptions} />;
+  return <Line data={chartData} options={chartOptions} className="graph" />;
 };
 
 export default WorkoutPlot;
