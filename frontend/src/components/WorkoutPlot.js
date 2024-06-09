@@ -53,7 +53,7 @@ const WorkoutPlot = ({ workouts, setWorkouts }) => {
       {
         label: "Workout Duration (minutes)",
         data: dataWithTypes,
-        borderColor: "rgba(75,192,192,1)",
+        borderColor: "rgba(75,92,192,1)",
         fill: false,
       },
     ],

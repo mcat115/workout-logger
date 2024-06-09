@@ -123,12 +123,14 @@ const WorkoutForm = ({ workouts, setWorkouts }) => {
             required
           />
         </label>
-        <button type="submit" className="form-element">
+        <button type="submit" className="form-element clickable">
           Add Workout
         </button>
       </form>
       <form onSubmit={handleDelete} className="delete-button">
-        <button type="submit">Clear Workout History</button>
+        <button type="submit" className="clickable">
+          Clear Workout History
+        </button>
       </form>
     </div>
   );
