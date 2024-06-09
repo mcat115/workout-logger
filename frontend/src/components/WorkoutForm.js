@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./WorkoutForm.css";
+import "./styles.css";
 
 const WorkoutForm = ({ workouts, setWorkouts }) => {
   const [type, setType] = useState("");
@@ -9,7 +9,7 @@ const WorkoutForm = ({ workouts, setWorkouts }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (parseInt(duration) <= 0 || parseInt(duration) > 360) {
+    if (parseFloat(duration) <= 0 || parseFloat(duration) > 360) {
       alert("Workout length cannot be negative, zero, or over 6 hours.");
       return;
     }
@@ -33,11 +33,11 @@ const WorkoutForm = ({ workouts, setWorkouts }) => {
 
       if (date in updatedWorkouts) {
         updatedWorkouts[date] = {
-          duration: updatedWorkouts[date].duration + parseInt(duration),
+          duration: updatedWorkouts[date].duration + parseFloat(duration),
           type: `${updatedWorkouts[date].type} + ${type}`,
         };
       } else {
-        updatedWorkouts[date] = { duration: parseInt(duration), type };
+        updatedWorkouts[date] = { duration: parseFloat(duration), type };
       }
 
       setWorkouts(updatedWorkouts);
@@ -51,11 +51,7 @@ const WorkoutForm = ({ workouts, setWorkouts }) => {
   };
 
   const handleDelete = async () => {
-    const isConfirmed = window.confirm(
-      "Are you sure you want to delete all workouts?"
-    );
-
-    if (isConfirmed) {
+    if (confirm("Are you sure you want to delete all workouts?")) {
       try {
         const response = await fetch("http://127.0.0.1:5000/api/workouts", {
           method: "DELETE",
