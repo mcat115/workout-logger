@@ -85,6 +85,7 @@ const WorkoutForm = ({ workouts, setWorkouts }) => {
     "Lift - Shoulders",
     "Lift - Legs",
     "Lift - Abs",
+    "Other",
   ];
 
   return (

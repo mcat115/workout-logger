@@ -73,7 +73,8 @@ const WorkoutPlot = ({ workouts, setWorkouts }) => {
         callbacks: {
           label: function (context) {
             const type = context.raw.type;
-            return `Type: ${type}`;
+            const duration = context.raw.y;
+            return `Total duration: ${duration} minutes, Type: ${type}`;
           },
         },
       },
