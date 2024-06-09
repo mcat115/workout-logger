@@ -51,21 +51,18 @@ const WorkoutForm = ({ workouts, setWorkouts }) => {
   };
 
   const handleDelete = async () => {
-    if (confirm("Are you sure you want to delete all workouts?")) {
-      try {
-        const response = await fetch("http://127.0.0.1:5000/api/workouts", {
-          method: "DELETE",
-        });
-        if (response.ok) {
-          setWorkouts({});
-        } else {
-          console.error(`Error deleting workout, status: ${response.status}`);
-        }
-      } catch (error) {
-        console.error("Error deleting workouts: ", error);
+    try {
+      const response = await fetch("http://127.0.0.1:5000/api/workouts", {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        setWorkouts({});
+      } else {
+        console.error(`Error deleting workout, status: ${response.status}`);
       }
+    } catch (error) {
+      console.error("Error deleting workouts: ", error);
     }
-    setWorkouts({});
   };
 
   const WORKOUT_TYPES = [
