@@ -85,49 +85,53 @@ const WorkoutForm = ({ workouts, setWorkouts }) => {
   ];
 
   return (
-    <div>
-      <form onSubmit={handleSubmit} className="workout-form">
-        <label className="form-element">
-          <span className="form-label">Type</span>
-          <select
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            required
-          >
-            {WORKOUT_TYPES.map((workoutType) => (
-              <option key={workoutType} value={workoutType}>
-                {workoutType}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="form-element">
-          <span className="form-label">Duration (minutes)</span>
-          <input
-            type="number"
-            value={duration}
-            onChange={(e) => setDuration(e.target.value)}
-            required
-          />
-        </label>
-        <label className="form-element">
-          <span className="form-label">Date</span>
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            required
-          />
-        </label>
-        <button type="submit" className="form-element clickable">
-          Add Workout
-        </button>
-      </form>
-      <form onSubmit={handleDelete} className="delete-button">
-        <button type="submit" className="clickable">
-          Clear Workout History
-        </button>
-      </form>
+    <div class="forms-container">
+      <div>
+        <form onSubmit={handleSubmit} className="workout-form">
+          <label className="form-element">
+            <span className="form-label">Type</span>
+            <select
+              value={type}
+              onChange={(e) => setType(e.target.value)}
+              required
+            >
+              {WORKOUT_TYPES.map((workoutType) => (
+                <option key={workoutType} value={workoutType}>
+                  {workoutType}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="form-element">
+            <span className="form-label">Duration (minutes)</span>
+            <input
+              type="number"
+              value={duration}
+              onChange={(e) => setDuration(e.target.value)}
+              required
+            />
+          </label>
+          <label className="form-element">
+            <span className="form-label">Date</span>
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              required
+            />
+          </label>
+          <button type="submit" className="form-element clickable">
+            Add Workout
+          </button>
+        </form>
+      </div>
+      <div>
+        <form onSubmit={handleDelete} className="delete-button">
+          <button type="submit" className="clickable">
+            Clear Workout History
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

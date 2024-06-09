@@ -1,5 +1,5 @@
 {
-  "name": "workout-tracker",
+  "name": "workout-logger",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
