@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import "chart.js/auto";
 
 const WorkoutPlot = ({ workouts, setWorkouts }) => {
   const mergeWorkouts = (res) => {
     const mergedWorkouts = {};
+
     res.forEach((workout) => {
       if (workout.date in mergedWorkouts) {
         mergedWorkouts[workout.date].duration += workout.duration;
-        mergedWorkouts[workout.date].type += ` + ${workout.duration}`;
+        mergedWorkouts[workout.date].type += ` + ${workout.type}`;
       } else {
         mergedWorkouts[workout.date] = {
           duration: workout.duration,
@@ -16,6 +17,7 @@ const WorkoutPlot = ({ workouts, setWorkouts }) => {
         };
       }
     });
+
     return mergedWorkouts;
   };
 
@@ -35,19 +37,50 @@ const WorkoutPlot = ({ workouts, setWorkouts }) => {
     fetchWorkouts();
   }, []);
 
-  const data = {
-    labels: Object.keys(workouts).sort((a, b) => new Date(a) - new Date(b)),
+  const sortedWorkouts = Object.entries(workouts).sort(
+    (a, b) => new Date(a[0]) - new Date(b[0])
+  );
+
+  const dataWithTypes = sortedWorkouts.map(([_, workout]) => ({
+    x: workout.duration,
+    y: workout.duration,
+    type: workout.type,
+  }));
+
+  const chartData = {
+    labels: sortedWorkouts.map(([date, _]) => date),
     datasets: [
       {
         label: "Workout Duration (minutes)",
-        data: Object.values(workouts).map((workout) => workout.duration),
+        data: dataWithTypes,
         borderColor: "rgba(75,192,192,1)",
         fill: false,
       },
     ],
   };
 
-  return <Line data={data} />;
+  const chartOptions = {
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+    plugins: {
+      legend: {
+        onClick: null,
+      },
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            const type = context.raw.type;
+            return `Type: ${type}`;
+          },
+        },
+      },
+    },
+  };
+
+  return <Line data={chartData} options={chartOptions} />;
 };
 
 export default WorkoutPlot;

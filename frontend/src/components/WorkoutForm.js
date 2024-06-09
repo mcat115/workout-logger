@@ -31,10 +31,10 @@ const WorkoutForm = ({ workouts, setWorkouts }) => {
 
       const updatedWorkouts = { ...workouts };
 
-      if (date in workouts) {
+      if (date in updatedWorkouts) {
         updatedWorkouts[date] = {
-          duration: workouts[date].duration + parseInt(duration),
-          type: `${workouts[date].type} + ${type}`,
+          duration: updatedWorkouts[date].duration + parseInt(duration),
+          type: `${updatedWorkouts[date].type} + ${type}`,
         };
       } else {
         updatedWorkouts[date] = { duration: parseInt(duration), type };
@@ -78,13 +78,13 @@ const WorkoutForm = ({ workouts, setWorkouts }) => {
     "Stair master",
     "Elliptical",
     "Swim",
-    "Lift: Chest",
-    "Lift: Triceps",
-    "Lift: Biceps",
-    "Lift: Back",
-    "Lift: Shoulders",
-    "Lift: Legs",
-    "Lift: Abs",
+    "Lift - Chest",
+    "Lift - Triceps",
+    "Lift - Biceps",
+    "Lift - Back",
+    "Lift - Shoulders",
+    "Lift - Legs",
+    "Lift - Abs",
   ];
 
   return (
