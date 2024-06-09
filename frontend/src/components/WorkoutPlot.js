@@ -31,7 +31,7 @@ const WorkoutPlot = ({ workouts, setWorkouts }) => {
         const data = await response.json();
         setWorkouts(mergeWorkouts(data));
       } catch (error) {
-        console.error("Failed to fetch workouts:", error);
+        console.error("Failed to fetch workouts: ", error);
       }
     };
     fetchWorkouts();

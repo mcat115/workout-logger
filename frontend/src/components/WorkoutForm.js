@@ -26,7 +26,7 @@ const WorkoutForm = ({ workouts, setWorkouts }) => {
       });
 
       if (!response.ok) {
-        console.error;
+        console.error(`Error creating workout, status: ${response.status}`);
       }
 
       const updatedWorkouts = { ...workouts };
@@ -46,7 +46,7 @@ const WorkoutForm = ({ workouts, setWorkouts }) => {
       setDuration("");
       setDate("");
     } catch (error) {
-      console.error("Error creating workout:", error);
+      console.error("Error creating workout: ", error);
     }
   };
 
@@ -59,10 +59,10 @@ const WorkoutForm = ({ workouts, setWorkouts }) => {
         if (response.ok) {
           setWorkouts({});
         } else {
-          console.error("Error deleting workouts");
+          console.error(`Error deleting workout, status: ${response.status}`);
         }
       } catch (error) {
-        console.error("Error deleting workouts:", error);
+        console.error("Error deleting workouts: ", error);
       }
     }
   };
@@ -76,8 +76,8 @@ const WorkoutForm = ({ workouts, setWorkouts }) => {
     "Swim",
     "Lift - Chest",
     "Lift - Triceps",
-    "Lift - Biceps",
     "Lift - Back",
+    "Lift - Biceps",
     "Lift - Shoulders",
     "Lift - Legs",
     "Lift - Abs",
