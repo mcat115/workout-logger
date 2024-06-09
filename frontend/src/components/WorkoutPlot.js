@@ -5,32 +5,34 @@ import "../styles.css";
 
 const WorkoutPlot = ({ workouts, setWorkouts }) => {
   const mergeWorkouts = (res) => {
-    const mergedWorkouts = {};
+    const totalWorkouts = {};
 
-    res.forEach((workout) => {
-      if (workout.date in mergedWorkouts) {
-        mergedWorkouts[workout.date].duration += workout.duration;
-        mergedWorkouts[workout.date].type += ` + ${workout.type}`;
+    res.forEach((exercise) => {
+      if (exercise.date in totalWorkouts) {
+        totalWorkouts[exercise.date].duration += exercise.duration;
+        totalWorkouts[exercise.date].type += ` + ${exercise.type}`;
       } else {
-        mergedWorkouts[workout.date] = {
-          duration: workout.duration,
-          type: workout.type,
+        totalWorkouts[exercise.date] = {
+          duration: exercise.duration,
+          type: exercise.type,
         };
       }
     });
 
-    return mergedWorkouts;
+    return totalWorkouts;
   };
 
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
         const response = await fetch("http://127.0.0.1:5000/api/workouts");
-        if (!response.ok) {
+
+        if (response.ok) {
+          const jsonRes = await response.json();
+          setWorkouts(mergeWorkouts(jsonRes));
+        } else {
           console.error(`Error fetching workouts, status: ${response.status}`);
         }
-        const data = await response.json();
-        setWorkouts(mergeWorkouts(data));
       } catch (error) {
         console.error("Failed to fetch workouts: ", error);
       }
@@ -38,31 +40,36 @@ const WorkoutPlot = ({ workouts, setWorkouts }) => {
     fetchWorkouts();
   }, []);
 
-  const sortedWorkouts = Object.entries(workouts).sort(
-    (a, b) => new Date(a[0]) - new Date(b[0])
-  );
+  const chartValues = Object.entries(workouts)
+    .sort((a, b) => new Date(a[0]) - new Date(b[0]))
+    .reduce(
+      (output, [date, workout]) => {
+        // Add dates to x axis labels
+        output.labels.push(date);
+        // Add durations to y axis labels and workout types to tooltip labels
+        output.data.push({
+          x: date,
+          y: workout.duration,
+          type: workout.type,
+        });
+        return output;
+      },
+      { labels: [], data: [] }
+    );
 
-  const dataWithTypes = sortedWorkouts.map(([_, workout]) => ({
-    // x and y are required for the chart to display data, that is why they are duplicates
-    // the date is displayed as a label and the type is displayed in the tooltip
-    x: workout.duration,
-    y: workout.duration,
-    type: workout.type,
-  }));
-
-  const chartData = {
-    labels: sortedWorkouts.map(([date, _]) => date),
+  const data = {
+    labels: chartValues.labels,
     datasets: [
       {
         label: "Workout Duration (minutes)",
-        data: dataWithTypes,
+        data: chartValues.data,
         borderColor: "rgba(75,92,192,1)",
         fill: false,
       },
     ],
   };
 
-  const chartOptions = {
+  const options = {
     scales: {
       y: {
         beginAtZero: true,
@@ -74,17 +81,15 @@ const WorkoutPlot = ({ workouts, setWorkouts }) => {
       },
       tooltip: {
         callbacks: {
-          label: function (context) {
-            const type = context.raw.type;
-            const duration = context.raw.y;
-            return `Total duration: ${duration} minutes, Type: ${type}`;
+          label: (data) => {
+            return `Total duration: ${data.raw.y} minutes, Type: ${data.raw.type}`;
           },
         },
       },
     },
   };
 
-  return <Line data={chartData} options={chartOptions} className="graph" />;
+  return <Line data={data} options={options} className="graph" />;
 };
 
 export default WorkoutPlot;

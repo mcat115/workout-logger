@@ -6,63 +6,6 @@ const WorkoutForm = ({ workouts, setWorkouts }) => {
   const [duration, setDuration] = useState("");
   const [date, setDate] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (parseFloat(duration) <= 0 || parseFloat(duration) > 360) {
-      alert("Workout length cannot be negative, zero, or over 6 hours.");
-    } else {
-      try {
-        const workout = { type, duration, date };
-
-        const response = await fetch("http://127.0.0.1:5000/api/workouts", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(workout),
-        });
-
-        if (!response.ok) {
-          console.error(`Error creating workout, status: ${response.status}`);
-        }
-
-        const updatedWorkouts = { ...workouts };
-
-        if (date in updatedWorkouts) {
-          updatedWorkouts[date] = {
-            duration: updatedWorkouts[date].duration + parseFloat(duration),
-            type: `${updatedWorkouts[date].type} + ${type}`,
-          };
-        } else {
-          updatedWorkouts[date] = { duration: parseFloat(duration), type };
-        }
-
-        setWorkouts(updatedWorkouts);
-        setType("");
-        setDuration("");
-        setDate("");
-      } catch (error) {
-        console.error("Error creating workout: ", error);
-      }
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      const response = await fetch("http://127.0.0.1:5000/api/workouts", {
-        method: "DELETE",
-      });
-      if (response.ok) {
-        setWorkouts({});
-      } else {
-        console.error(`Error deleting workout, status: ${response.status}`);
-      }
-    } catch (error) {
-      console.error("Error deleting workouts: ", error);
-    }
-  };
-
   const WORKOUT_TYPES = [
     "",
     "Run",
@@ -80,8 +23,64 @@ const WorkoutForm = ({ workouts, setWorkouts }) => {
     "Other",
   ];
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (parseFloat(duration) <= 0 || parseFloat(duration) > 360) {
+      alert("Workout length cannot be negative, zero, or over 6 hours.");
+    } else {
+      try {
+        const response = await fetch("http://127.0.0.1:5000/api/workouts", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ type, duration, date }),
+        });
+
+        if (response.ok) {
+          const updatedWorkouts = { ...workouts };
+
+          if (date in updatedWorkouts) {
+            updatedWorkouts[date] = {
+              duration: updatedWorkouts[date].duration + parseFloat(duration),
+              type: `${updatedWorkouts[date].type} + ${type}`,
+            };
+          } else {
+            updatedWorkouts[date] = { duration: parseFloat(duration), type };
+          }
+
+          setWorkouts(updatedWorkouts);
+          setType("");
+          setDuration("");
+          setDate("");
+        } else {
+          console.error(`Error creating workout, status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error("Error creating workout: ", error);
+      }
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:5000/api/workouts", {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        setWorkouts({});
+      } else {
+        console.error(`Error deleting workout, status: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("Error deleting workouts: ", error);
+    }
+  };
+
   return (
-    <div class="forms-container">
+    <div className="forms-container">
       <div>
         <form onSubmit={handleSubmit} className="workout-form">
           <label className="form-element">
