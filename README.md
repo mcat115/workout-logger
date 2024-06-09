@@ -31,5 +31,5 @@ npm start
 ```
 
 Database is titled workoutdb and uses Postgres.
-Set up Postgres and database based on your environment:
-Go into the config.py folder and replace values based on your configuration
+Set up Postgres and database based on your environment.
+Go into the config.py folder and replace values based on your configuration.
