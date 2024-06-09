@@ -65,6 +65,7 @@ const WorkoutForm = ({ workouts, setWorkouts }) => {
         console.error("Error deleting workouts: ", error);
       }
     }
+    setWorkouts({});
   };
 
   const WORKOUT_TYPES = [
