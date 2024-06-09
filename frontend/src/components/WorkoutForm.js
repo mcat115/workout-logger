@@ -11,42 +11,40 @@ const WorkoutForm = ({ workouts, setWorkouts }) => {
 
     if (parseFloat(duration) <= 0 || parseFloat(duration) > 360) {
       alert("Workout length cannot be negative, zero, or over 6 hours.");
-      return;
-    }
+    } else {
+      try {
+        const workout = { type, duration, date };
 
-    const workout = { type, duration, date };
+        const response = await fetch("http://127.0.0.1:5000/api/workouts", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(workout),
+        });
 
-    try {
-      const response = await fetch("http://127.0.0.1:5000/api/workouts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(workout),
-      });
+        if (!response.ok) {
+          console.error(`Error creating workout, status: ${response.status}`);
+        }
 
-      if (!response.ok) {
-        console.error(`Error creating workout, status: ${response.status}`);
+        const updatedWorkouts = { ...workouts };
+
+        if (date in updatedWorkouts) {
+          updatedWorkouts[date] = {
+            duration: updatedWorkouts[date].duration + parseFloat(duration),
+            type: `${updatedWorkouts[date].type} + ${type}`,
+          };
+        } else {
+          updatedWorkouts[date] = { duration: parseFloat(duration), type };
+        }
+
+        setWorkouts(updatedWorkouts);
+        setType("");
+        setDuration("");
+        setDate("");
+      } catch (error) {
+        console.error("Error creating workout: ", error);
       }
-
-      const updatedWorkouts = { ...workouts };
-
-      if (date in updatedWorkouts) {
-        updatedWorkouts[date] = {
-          duration: updatedWorkouts[date].duration + parseFloat(duration),
-          type: `${updatedWorkouts[date].type} + ${type}`,
-        };
-      } else {
-        updatedWorkouts[date] = { duration: parseFloat(duration), type };
-      }
-
-      setWorkouts(updatedWorkouts);
-
-      setType("");
-      setDuration("");
-      setDate("");
-    } catch (error) {
-      console.error("Error creating workout: ", error);
     }
   };
 
