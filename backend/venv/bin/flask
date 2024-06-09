@@ -1,4 +1,4 @@
-#!/home/mcatanese/workout-logger-assignment/backend/venv/bin/python3
+#!/home/mcatanese/workout-logger/backend/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
