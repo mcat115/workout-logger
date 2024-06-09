@@ -1,26 +1,45 @@
 import React, { useState } from "react";
 import "./WorkoutForm.css";
 
-function WorkoutForm({ onAddWorkout }) {
+const WorkoutForm = ({ workouts, setWorkouts }) => {
   const [type, setType] = useState("");
   const [duration, setDuration] = useState("");
   const [date, setDate] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const workout = { type, duration, date };
-    const response = await fetch("http://127.0.0.1:5000/api/workouts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(workout),
-    });
-    if (response.ok) {
-      onAddWorkout(workout);
-      setType("");
-      setDuration("");
-      setDate("");
+
+    if (parseInt(duration) <= 0) {
+      alert("Workout length cannot be negative or zero.");
+    } else {
+      const workout = { type, duration, date };
+      const response = await fetch("http://127.0.0.1:5000/api/workouts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(workout),
+      });
+      if (response.ok) {
+        if (date in workouts) {
+          setWorkouts({
+            ...workouts,
+            [date]: {
+              duration: workouts[date].duration + parseInt(duration),
+              type: `${workouts[date].type} + ${type}`,
+            },
+          });
+        } else {
+          setWorkouts({
+            ...workouts,
+            [date]: { duration: parseInt(duration), type },
+          });
+        }
+
+        setType("");
+        setDuration("");
+        setDate("");
+      }
     }
   };
 
@@ -75,6 +94,6 @@ function WorkoutForm({ onAddWorkout }) {
       </button>
     </form>
   );
-}
+};
 
 export default WorkoutForm;
