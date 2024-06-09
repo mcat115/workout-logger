@@ -35,6 +35,12 @@
   cursor: pointer;
 }
 
+.clickable:hover {
+  background-color: #4595a0;
+  color: white; 
+  border-radius: 3px;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
 }
