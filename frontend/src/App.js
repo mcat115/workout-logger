@@ -7,7 +7,7 @@ function App() {
 
   return (
     <div>
-      <h1>Workout Tracker</h1>
+      <h1>Workout Log</h1>
       <WorkoutForm workouts={workouts} setWorkouts={setWorkouts} />
       <WorkoutPlot workouts={workouts} setWorkouts={setWorkouts} />
     </div>

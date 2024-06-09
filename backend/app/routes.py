@@ -28,3 +28,14 @@ def init_routes(app):
             }
             output.append(workout_data)
         return jsonify(output)
+
+    @app.route('/api/workouts', methods=['DELETE'])
+    def delete_all_workouts():
+        from . import db
+        try:
+            num_deleted = db.session.query(Workout).delete()
+            db.session.commit()
+            return jsonify({'message': f'{num_deleted} workouts deleted'}), 200
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'error': str(e)}), 500

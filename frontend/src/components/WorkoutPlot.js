@@ -21,10 +21,16 @@ const WorkoutPlot = ({ workouts, setWorkouts }) => {
 
   useEffect(() => {
     const fetchWorkouts = async () => {
-      const response = await fetch("http://127.0.0.1:5000/api/workouts");
-      const data = await response.json();
-      console.log(data);
-      setWorkouts(mergeWorkouts(data));
+      try {
+        const response = await fetch("http://127.0.0.1:5000/api/workouts");
+        if (!response.ok) {
+          console.error(`Error fetching workouts, status: ${response.status}`);
+        }
+        const data = await response.json();
+        setWorkouts(mergeWorkouts(data));
+      } catch (error) {
+        console.error("Failed to fetch workouts:", error);
+      }
     };
     fetchWorkouts();
   }, []);
