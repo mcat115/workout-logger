@@ -7,7 +7,7 @@ function WorkoutPlot() {
 
     useEffect(() => {
         const fetchWorkouts = async () => {
-            const response = await fetch('/api/workouts');
+            const response = await fetch('http://127.0.0.1:5000/api/workouts');
             const data = await response.json();
             setWorkouts(data);
         };
