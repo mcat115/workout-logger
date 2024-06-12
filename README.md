@@ -5,6 +5,8 @@ in the backend folder
 ```
 python3 -m venv venv # Use python instead of python3 if on Windows
 pip install -r requirements.txt
+export FLASK_APP=app
+export FLASK_ENV=development
 ```
 
 in the frontend folder
@@ -19,8 +21,6 @@ in the backend folder
 
 ```
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-export FLASK_APP=app
-export FLASK_ENV=development
 flask run
 ```
 
